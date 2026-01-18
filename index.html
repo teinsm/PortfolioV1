@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+PORTFOLIO V3.5 (Text statt thumbnails)
+
+I<!DOCTYPE html>
 <html lang="de">
 <head>
 	<meta charset="UTF-8">
@@ -156,10 +158,27 @@
 			text-align: right;
 		}
 
-		.project-media iframe,
-		.project-media img {
+		.project-media iframe {
 			max-width: 100%;
 			height: auto;
+		}
+
+		/* Schwarzer Platzhalter für Instagram-Reels */
+		.black-placeholder {
+			width: 100%;
+			max-width: 320px;
+			aspect-ratio: 9 / 16;
+			background-color: #000000;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 8px;
+		}
+
+		.black-placeholder span {
+			color: #FFFFFF;
+			font-size: 11px;
+			text-align: center;
 		}
 
 		.project-meta-title {
@@ -313,8 +332,7 @@
 					"10/2024"
 				],
 				beschreibung: "Promovideo für meinen Song „Egal“ – Instagram/TikTok – Kamera: Niclas Rother",
-				embedTyp: "thumbnail",
-				thumbnail: "thumbnails/ich-hab-gehoert-promo.jpg"
+				embedTyp: "thumbnail"
 			},
 			{
 				id: "kurzfilm-unentschieden",
@@ -329,8 +347,7 @@
 					"11/2025"
 				],
 				beschreibung: "Kurzfilmprojekt im Rahmen meiner Ausbildung – Credits im Video",
-				embedTyp: "thumbnail",
-				thumbnail: "thumbnails/kurzfilm-unentschieden.jpg"
+				embedTyp: "thumbnail"
 			},
 			{
 				id: "t1m-x-namo-fuer-immer",
@@ -408,8 +425,7 @@
 					"08/2025"
 				],
 				beschreibung: "Projekt für Kunden im Rahmen meiner Ausbildung – Instagram – Herzkissen (NGO) / newcut werbefilme e.K.",
-				embedTyp: "thumbnail",
-				thumbnail: "thumbnails/herzkissen-imagefilm.jpg"
+				embedTyp: "thumbnail"
 			},
 			{
 				id: "fritz-wahr-und-falsch-promo",
@@ -422,8 +438,7 @@
 					"11/2025"
 				],
 				beschreibung: "Promo-Reel für Musiker – Instagram – Kamera: Unbekannt",
-				embedTyp: "thumbnail",
-				thumbnail: "thumbnails/fritz-wahr-und-falsch.jpg"
+				embedTyp: "thumbnail"
 			},
 			{
 				id: "fritz-regen-promo-1",
@@ -436,8 +451,7 @@
 					"12/2025"
 				],
 				beschreibung: "Promo-Reel für Musiker – Instagram – Kamera: Unbekannt",
-				embedTyp: "thumbnail",
-				thumbnail: "thumbnails/fritz-regen-1.jpg"
+				embedTyp: "thumbnail"
 			},
 			{
 				id: "fritz-regen-promo-2",
@@ -450,8 +464,7 @@
 					"12/2025"
 				],
 				beschreibung: "Promo-Reel für Musiker – Instagram – Kamera: Unbekannt",
-				embedTyp: "thumbnail",
-				thumbnail: "thumbnails/fritz-regen-2.jpg"
+				embedTyp: "thumbnail"
 			},
 			{
 				id: "t1m-egal-promo-1",
@@ -464,8 +477,7 @@
 					"11/2024"
 				],
 				beschreibung: "Promo-Reel für eigenen Song – Instagram – Kamera: Niclas Rother",
-				embedTyp: "thumbnail",
-				thumbnail: "thumbnails/t1m-egal-1.jpg"
+				embedTyp: "thumbnail"
 			},
 			{
 				id: "t1m-egal-promo-2",
@@ -478,8 +490,7 @@
 					"12/2024"
 				],
 				beschreibung: "Promo-Reel für eigenen Song – Instagram – Kamera: Niclas Rother",
-				embedTyp: "thumbnail",
-				thumbnail: "thumbnails/t1m-egal-2.jpg"
+				embedTyp: "thumbnail"
 			},
 			{
 				id: "t1m-irgendwann-okay-promo-1",
@@ -492,8 +503,7 @@
 					"09/2025"
 				],
 				beschreibung: "Promo-Reel für eigenen Song – Instagram, TikTok – Kamera: @lu.visuals_",
-				embedTyp: "thumbnail",
-				thumbnail: "thumbnails/t1m-irgendwann-okay-1.jpg"
+				embedTyp: "thumbnail"
 			},
 			{
 				id: "t1m-egal-irgendwann-okay-promo-2",
@@ -506,8 +516,7 @@
 					"09/2025"
 				],
 				beschreibung: "Promo-Reel für eigenen Song – Instagram, TikTok – Kamera: @lu.visuals_",
-				embedTyp: "thumbnail",
-				thumbnail: "thumbnails/t1m-egal-irgendwann-okay-2.jpg"
+				embedTyp: "thumbnail"
 			}
 		];
 
@@ -547,7 +556,7 @@
 					const item = document.createElement("div");
 					item.className = "project-item";
 
-					// Spalte 1: Miniplayer / Thumbnail / Link
+					// Spalte 1: Miniplayer / Platzhalter / Link
 					const media = document.createElement("div");
 					media.className = "project-media";
 
@@ -562,18 +571,20 @@
 							"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
 						iframe.allowFullscreen = true;
 						media.appendChild(iframe);
-					} else if (project.embedTyp === "thumbnail" && project.thumbnail) {
-						// Thumbnail mit Link (für Instagram etc.)
+					} else if (project.embedTyp === "thumbnail") {
+						// Schwarze Fläche mit Text, komplett klickbar
 						const link = document.createElement("a");
 						link.href = project.link;
 						link.target = "_blank";
 
-						const img = document.createElement("img");
-						img.src = project.thumbnail;
-						img.alt = project.titel;
-						img.style.maxWidth = "100%";
+						const box = document.createElement("div");
+						box.className = "black-placeholder";
 
-						link.appendChild(img);
+						const text = document.createElement("span");
+						text.textContent = "hier klicken, um zum video zu gelangen";
+
+						box.appendChild(text);
+						link.appendChild(box);
 						media.appendChild(link);
 					} else {
 						// Fallback: einfacher Textlink
@@ -633,3 +644,4 @@
 	</script>
 </body>
 </html>
+
