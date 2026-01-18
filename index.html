@@ -72,7 +72,7 @@
 		/* Seitencontainer */
 		.page {
 			min-height: 100vh;
-			padding: 100px 80px 60px 80px; /* Platz für Nav oben */
+			padding: 60px 80px 60px 80px; /* Basis-Padding */
 			display: none;
 		}
 
@@ -80,7 +80,9 @@
 			display: block;
 		}
 
-		h1 {
+		/* Dynamischer Seitentitel oben links */
+		#page-title {
+			padding: 100px 80px 0 80px; /* Platz für Nav oben */
 			font-size: 48px;
 			margin-bottom: 40px;
 		}
@@ -100,34 +102,21 @@
 			display: flex;
 			gap: 40px;
 			align-items: flex-start;
+			padding: 0 80px 60px 80px;
 		}
 
-		/* Linke Spalte: ausklappbare Kategorien */
+		/* Linke Spalte: Kategorien */
 		.portfolio-categories {
 			display: flex;
 			flex-direction: column;
-			gap: 12px;
+			gap: 20px;
+			align-items: flex-start; /* links ausrichten */
 		}
 
 		.category-toggle {
 			cursor: pointer;
 			font-size: 18px;
 			text-transform: uppercase;
-		}
-
-		/* Wenn eine Kategorie geöffnet ist: schmale Leiste links mit Pfeilen */
-		.category-sidebar {
-			display: flex;
-			flex-direction: column;
-			gap: 6px;
-			font-size: 12px; /* kleine Beschriftung */
-		}
-
-		.category-sidebar button {
-			background: none;
-			border: none;
-			cursor: pointer;
-			text-align: left;
 		}
 
 		/* Rechte Seite: Listenansicht der Projekte */
@@ -180,6 +169,7 @@
 		.contact-list {
 			font-size: 16px;
 			line-height: 1.8;
+			padding: 0 80px 60px 80px;
 		}
 	</style>
 </head>
@@ -194,9 +184,11 @@
 		<span class="nav-link" data-target="contact">Kontakt</span>
 	</nav>
 
+	<!-- Dynamischer Titel -->
+	<div id="page-title">über mich</div>
+
 	<!-- ÜBER MICH / LANDING PAGE -->
 	<section class="page active" id="page-about">
-		<h1>Portfolio</h1>
 		<div class="hero-center">
 			<span>Platzhalter</span>
 		</div>
@@ -204,22 +196,16 @@
 
 	<!-- PORTFOLIO -->
 	<section class="page" id="page-portfolio">
-		<h1>Portfolio</h1>
-
 		<div class="portfolio-layout">
-			<!-- Linke Seite: Kategorien + Sidebar -->
+			<!-- Linke Seite: Kategorien -->
 			<div>
 				<div class="portfolio-categories" id="portfolio-categories">
-					<div class="category-toggle" data-category="all">Alle Projekte</div>
-					<div class="category-toggle" data-category="kamera">Kameraarbeit</div>
-					<div class="category-toggle" data-category="post">Post-Production</div>
-					<div class="category-toggle" data-category="kreativ">Kreativ</div>
-					<div class="category-toggle" data-category="shortform">Shortform</div>
-					<div class="category-toggle" data-category="longform">Longform</div>
-				</div>
-
-				<div class="category-sidebar" id="category-sidebar" style="margin-top: 24px;">
-					<!-- Wird dynamisch mit kleinen Pfeilen & Labels gefüllt -->
+					<div class="category-toggle" data-category="all">ALLE PROJEKTE</div>
+					<div class="category-toggle" data-category="kamera">KAMERAARBEIT</div>
+					<div class="category-toggle" data-category="post">POST-PRODUCTION</div>
+					<div class="category-toggle" data-category="kreativ">KREATIV</div>
+					<div class="category-toggle" data-category="shortform">SHORTFORM</div>
+					<div class="category-toggle" data-category="longform">LONGFORM</div>
 				</div>
 			</div>
 
@@ -231,11 +217,7 @@
 	</section>
 
 	<!-- KONTAKT -->
-            <!-- Die AI hat bei der Interpretation des Inhalts einen Fehler gemacht. Bitte hier die Kontaktdaten einfügen:
-  Instagram: [https://www.instagram.com/t1mkardashian/](https://www.instagram.com/t1mkardashian/)
-  E-Mail: timkardashianwestcontact@gmail.com-->
 	<section class="page" id="page-contact">
-		<h1>Portfolio</h1>
 		<div class="contact-list">
 			<p>Instagram: <a href="https://www.instagram.com/t1mkardashian/" target="_blank">@t1mkardashian</a></p>
 			<p>E-Mail: <a href="mailto:timkardashianwestcontact@gmail.com">timkardashianwestcontact@gmail.com</a></p>
@@ -247,6 +229,7 @@
 
 		const navbar = document.getElementById("navbar");
 		const navLinks = document.querySelectorAll(".nav-link");
+		const pageTitle = document.getElementById("page-title");
 		const pages = {
 			about: document.getElementById("page-about"),
 			portfolio: document.getElementById("page-portfolio"),
@@ -263,6 +246,15 @@
 			navLinks.forEach(link => {
 				link.classList.toggle("active", link.dataset.target === target);
 			});
+
+			// Seitentitel setzen
+			if (target === "about") {
+				pageTitle.textContent = "über mich";
+			} else if (target === "portfolio") {
+				pageTitle.textContent = "Portfolio";
+			} else if (target === "contact") {
+				pageTitle.textContent = "Kontakt";
+			}
 
 			// Verhalten der Nav: auf Landing fix, sonst Mouseover
 			if (target === "about") {
@@ -292,7 +284,8 @@
 					"10/2024"
 				],
 				beschreibung: "Promovideo für meinen Song „Egal“ – Instagram/TikTok – Kamera: Niclas Müller",
-				embedTyp: "link" // Instagram-Reel lässt sich oft schlecht direkt einbetten -> Link mit Thumbnail o.Ä.
+				embedTyp: "thumbnail",              // Thumbnail + Link
+				thumbnail: "thumbnails/egal-promo-reel.jpg" // TODO: Bild ins Repo laden
 			},
 			{
 				id: "kurzfilm-unentschieden",
@@ -312,9 +305,8 @@
 			}
 		];
 
-		/* --- Portfolio-Kategorien / Sidebar / Listenfilter --- */
+		/* --- Portfolio-Kategorien / Listenfilter --- */
 
-		const categorySidebar = document.getElementById("category-sidebar");
 		const projectList = document.getElementById("project-list");
 		const categoryOrder = ["all", "kamera", "post", "kreativ", "shortform", "longform"];
 		const categoryLabels = {
@@ -328,30 +320,12 @@
 
 		let activeCategory = null;
 
-		function renderSidebar(active) {
-			categorySidebar.innerHTML = "";
-			if (!active) return;
-
-			categoryOrder.forEach(cat => {
-				if (cat === active) return;
-				const btn = document.createElement("button");
-				btn.textContent = "➜ " + categoryLabels[cat];
-				btn.style.fontSize = "12px";
-				btn.addEventListener("click", () => {
-					setCategory(cat);
-				});
-				categorySidebar.appendChild(btn);
-			});
-		}
-
 		function setCategory(category) {
 			activeCategory = category;
 			// Kategorie-Überschriften optisch hervorheben
 			document.querySelectorAll(".category-toggle").forEach(el => {
 				el.style.fontWeight = (el.dataset.category === category) ? "600" : "400";
 			});
-			// Sidebar aktualisieren
-			renderSidebar(category);
 			// Projekte filtern
 			renderProjects(category);
 		}
@@ -359,7 +333,6 @@
 		function renderProjects(category) {
 			projectList.innerHTML = "";
 
-			// Nach Datum sortieren – aktuell sind es nur 2, du kannst später eine echte Datumsspalte pflegen
 			const sorted = [...projects]; // Platzhalter für zukünftige Sortierung
 
 			sorted
@@ -383,8 +356,21 @@
 							"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
 						iframe.allowFullscreen = true;
 						media.appendChild(iframe);
+					} else if (project.embedTyp === "thumbnail" && project.thumbnail) {
+						// Thumbnail mit Link (für Instagram etc.)
+						const link = document.createElement("a");
+						link.href = project.link;
+						link.target = "_blank";
+
+						const img = document.createElement("img");
+						img.src = project.thumbnail;
+						img.alt = project.titel;
+						img.style.maxWidth = "100%";
+
+						link.appendChild(img);
+						media.appendChild(link);
 					} else {
-						// Fallback: Link (du kannst hier später ein echtes Thumbnail ergänzen)
+						// Fallback: einfacher Textlink
 						const link = document.createElement("a");
 						link.href = project.link;
 						link.target = "_blank";
@@ -400,11 +386,6 @@
 					title.className = "project-meta-title";
 					title.textContent = project.titel;
 					properties.appendChild(title);
-
-					const propTitle = document.createElement("div");
-					propTitle.className = "project-meta-section-title";
-					propTitle.textContent = "Eigenschaften";
-					properties.appendChild(propTitle);
 
 					const ul = document.createElement("ul");
 					project.eigenschaften.forEach(text => {
@@ -439,6 +420,8 @@
 			});
 		});
 
+		// Standard: Startseite = "über mich"
+		setActivePage("about");
 		// Standard: „Alle Projekte“ geöffnet
 		setCategory("all");
 	</script>
