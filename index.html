@@ -93,8 +93,23 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			font-size: 40px;
-			text-align: center;
+			font-size: 20px;
+			text-align: left;
+		}
+
+		.hero-text {
+			max-width: 700px;
+			line-height: 1.6;
+		}
+
+		.hero-text p {
+			margin-bottom: 8px;
+		}
+
+		.hero-text p:first-child {
+			font-size: 28px;
+			font-weight: 600;
+			margin-bottom: 16px;
 		}
 
 		/* Portfolio – Layout */
@@ -190,7 +205,14 @@
 	<!-- ÜBER MICH / LANDING PAGE -->
 	<section class="page active" id="page-about">
 		<div class="hero-center">
-			<span>Platzhalter</span>
+			<div class="hero-text">
+				<p><strong>Hi – ich bin Tim :)</strong></p>
+				<p>Ich bin Video-Cutter und arbeite vor allem im Bereich Musik, Social Media und Bewegtbild-Storytelling.</p>
+				<p>Neben eigenen Musik-Reels und TikToks habe ich an Kurzfilm- und Werbeprojekten mitgewirkt.</p>
+				<p>Mir ist Rhythmus, Gefühl und eine klare Bildsprache wichtiger als reine Effekte.</p>
+				<p>Auf dieser Seite zeige ich eine Auswahl an Projekten, an denen ich bisher beteiligt war.</p>
+				<p>Die einzelnen Arbeiten sind jeweils kurz eingeordnet.</p>
+			</div>
 		</div>
 	</section>
 
@@ -270,29 +292,35 @@
 			});
 		});
 
-		/* --- Projektdaten: hier kannst du später erweitern --- */
+		/* --- Projektdaten --- */
+		/* Kategorien:
+		   - "longform"/"shortform"      -> Tabs Longform/Shortform
+		   - "post" (Schnitt)            -> Post-Production
+		   - "kamera" (Kameraarbeit)     -> Kameraarbeit
+		   - "kreativ" (Storyboarding/Regie/Setdesign) -> Kreativ
+		   - immer zusätzlich "all"
+		*/
 
 		const projects = [
 			{
-				id: "egal-promo-reel",
-				titel: "Egal Promo Reel",
+				id: "ich-hab-gehoert-promo",
+				titel: "Ich hab’ gehört – Promo Reel",
 				link: "https://www.instagram.com/reel/DOJGLA9jMYi/",
-				kategorien: ["shortform", "post", "all"], // „Schnitt“ -> Post-Production
+				kategorien: ["shortform", "post", "all"],
 				eigenschaften: [
 					"Software: Adobe Premiere Pro, CapCut",
 					"Vollständige Postproduktion",
 					"10/2024"
 				],
-				beschreibung: "Promovideo für meinen Song „Egal“ – Instagram/TikTok – Kamera: Niclas Müller",
-				embedTyp: "thumbnail",              // Thumbnail + Link
-				thumbnail: "thumbnails/egal-promo-reel.jpg" // TODO: Bild ins Repo laden
+				beschreibung: "Promovideo für meinen Song „Egal“ – Instagram/TikTok – Kamera: Niclas Rother",
+				embedTyp: "thumbnail",
+				thumbnail: "thumbnails/ich-hab-gehoert-promo.jpg"
 			},
 			{
 				id: "kurzfilm-unentschieden",
 				titel: "Kurzfilmprojekt – „Unentschieden“",
-				link: "https://www.youtube.com/watch?v=I2UeHpvGEH4",
+				link: "https://www.instagram.com/p/DQriiTQCB48/",
 				kategorien: ["longform", "kreativ", "kamera", "post", "all"],
-				// Kreativ = Storyboarding, Regie, Setdesign (hier Storyboarding & Regie erfüllt)
 				eigenschaften: [
 					"Bediente Kamera: FX30",
 					"Software: Adobe Premiere Pro 2025, Adobe Photoshop 2025",
@@ -301,7 +329,185 @@
 					"11/2025"
 				],
 				beschreibung: "Kurzfilmprojekt im Rahmen meiner Ausbildung – Credits im Video",
+				embedTyp: "thumbnail",
+				thumbnail: "thumbnails/kurzfilm-unentschieden.jpg"
+			},
+			{
+				id: "t1m-x-namo-fuer-immer",
+				titel: "t1m x namo – fÜR iMmER",
+				link: "https://www.youtube.com/watch?v=eQ9utugtr68&list=RDeQ9utugtr68&start_radio=1",
+				kategorien: ["longform", "kreativ", "all"],
+				eigenschaften: [
+					"Rollen: Drehbuch, Regie, Teilschnitt, Talent",
+					"Software: Adobe Premiere Pro",
+					"05/2023"
+				],
+				beschreibung: "Eigenes Musikvideo – YouTube – DOP Niclas Rother",
 				embedTyp: "youtube"
+			},
+			{
+				id: "t1m-regen",
+				titel: "t1m – Regen",
+				link: "https://www.youtube.com/watch?v=XwEoOyoWl84",
+				kategorien: ["longform", "kreativ", "all"],
+				eigenschaften: [
+					"Rollen: Drehbuch, Regie, Teilschnitt, Talent",
+					"Software: DaVinci Resolve",
+					"02/2024"
+				],
+				beschreibung: "Eigenes Musikvideo – YouTube – DOP Andreas Kurz",
+				embedTyp: "youtube"
+			},
+			{
+				id: "t1m-hoehenflug",
+				titel: "t1m – Höhenflug",
+				link: "https://www.youtube.com/watch?v=M-9mBLnYyn4&list=RDM-9mBLnYyn4&start_radio=1",
+				kategorien: ["longform", "kreativ", "all"],
+				eigenschaften: [
+					"Rollen: Drehbuch, Regie, Teilschnitt, Talent",
+					"Software: Adobe Premiere Pro",
+					"08/2023"
+				],
+				beschreibung: "Eigenes Musikvideo – YouTube – DOP Niclas Rother",
+				embedTyp: "youtube"
+			},
+			{
+				id: "ein-baum-aus-stahl",
+				titel: "Ein Baum aus Stahl",
+				link: "https://www.youtube.com/watch?v=I2UeHpvGEH4",
+				kategorien: ["longform", "kreativ", "post", "all"],
+				eigenschaften: [
+					"Rollen: Drehbuch, Voiceover, Schnitt",
+					"Software: Adobe Premiere Pro, Adobe Photoshop",
+					"01/2026"
+				],
+				beschreibung: "Projekt für Kunden im Rahmen meiner Ausbildung – YouTube – newcut werbefilme e.K.",
+				embedTyp: "youtube"
+			},
+			{
+				id: "newcut-website-header",
+				titel: "newcut – Website-Header",
+				link: "https://www.youtube.com/watch?v=M50kIENEOYg",
+				kategorien: ["shortform", "post", "all"],
+				eigenschaften: [
+					"Rollen: Schnitt",
+					"Software: Adobe Premiere Pro",
+					"03/2025"
+				],
+				beschreibung: "Website-Header-Projekt im Rahmen eines Praktikums – YouTube – newcut werbefilme e.K.",
+				embedTyp: "youtube"
+			},
+			{
+				id: "herzkissen-imagefilm",
+				titel: "Herzkissen Imagefilm",
+				link: "https://www.instagram.com/reel/DPrer-QCDBP/",
+				kategorien: ["all"],
+				eigenschaften: [
+					"Rollen: Kameraassistenz, Teilschnitt, Grading",
+					"Software: Adobe Premiere Pro",
+					"08/2025"
+				],
+				beschreibung: "Projekt für Kunden im Rahmen meiner Ausbildung – Instagram – Herzkissen (NGO) / newcut werbefilme e.K.",
+				embedTyp: "thumbnail",
+				thumbnail: "thumbnails/herzkissen-imagefilm.jpg"
+			},
+			{
+				id: "fritz-wahr-und-falsch-promo",
+				titel: "Fritz – WAHR&FALSCH – Promo Reel",
+				link: "https://www.instagram.com/reel/DQhTeyIDLNk/",
+				kategorien: ["shortform", "post", "all"],
+				eigenschaften: [
+					"Rollen: Schnitt",
+					"Software: Adobe Premiere Pro, AI",
+					"11/2025"
+				],
+				beschreibung: "Promo-Reel für Musiker – Instagram – Kamera: Unbekannt",
+				embedTyp: "thumbnail",
+				thumbnail: "thumbnails/fritz-wahr-und-falsch.jpg"
+			},
+			{
+				id: "fritz-regen-promo-1",
+				titel: "Fritz – Regen – Promo Reel #1",
+				link: "https://www.instagram.com/reel/DSHlb1YDagS/",
+				kategorien: ["shortform", "post", "all"],
+				eigenschaften: [
+					"Rollen: Schnitt",
+					"Software: Adobe Premiere Pro, AI",
+					"12/2025"
+				],
+				beschreibung: "Promo-Reel für Musiker – Instagram – Kamera: Unbekannt",
+				embedTyp: "thumbnail",
+				thumbnail: "thumbnails/fritz-regen-1.jpg"
+			},
+			{
+				id: "fritz-regen-promo-2",
+				titel: "Fritz – Regen – Promo Reel #2",
+				link: "https://www.instagram.com/reel/DSV2ge1jDEW/",
+				kategorien: ["shortform", "post", "all"],
+				eigenschaften: [
+					"Rollen: Schnitt",
+					"Software: Adobe Premiere Pro, AI",
+					"12/2025"
+				],
+				beschreibung: "Promo-Reel für Musiker – Instagram – Kamera: Unbekannt",
+				embedTyp: "thumbnail",
+				thumbnail: "thumbnails/fritz-regen-2.jpg"
+			},
+			{
+				id: "t1m-egal-promo-1",
+				titel: "t1m – Egal – Promo Reel #1",
+				link: "https://www.instagram.com/reel/DCuQemNI_uC/",
+				kategorien: ["shortform", "post", "all"],
+				eigenschaften: [
+					"Rollen: Schnitt",
+					"Software: CapCut Desktop",
+					"11/2024"
+				],
+				beschreibung: "Promo-Reel für eigenen Song – Instagram – Kamera: Niclas Rother",
+				embedTyp: "thumbnail",
+				thumbnail: "thumbnails/t1m-egal-1.jpg"
+			},
+			{
+				id: "t1m-egal-promo-2",
+				titel: "t1m – Egal – Promo Reel #2",
+				link: "https://www.instagram.com/reel/DDHeD2TIGPz/",
+				kategorien: ["shortform", "post", "all"],
+				eigenschaften: [
+					"Rollen: Schnitt",
+					"Software: CapCut Desktop",
+					"12/2024"
+				],
+				beschreibung: "Promo-Reel für eigenen Song – Instagram – Kamera: Niclas Rother",
+				embedTyp: "thumbnail",
+				thumbnail: "thumbnails/t1m-egal-2.jpg"
+			},
+			{
+				id: "t1m-irgendwann-okay-promo-1",
+				titel: "t1m – Irgendwann Okay – Promo Reel #1",
+				link: "https://www.instagram.com/reel/DPL_VJ0jBJD/",
+				kategorien: ["shortform", "post", "all"],
+				eigenschaften: [
+					"Rollen: Schnitt",
+					"Software: Adobe Premiere Pro",
+					"09/2025"
+				],
+				beschreibung: "Promo-Reel für eigenen Song – Instagram, TikTok – Kamera: @lu.visuals_",
+				embedTyp: "thumbnail",
+				thumbnail: "thumbnails/t1m-irgendwann-okay-1.jpg"
+			},
+			{
+				id: "t1m-egal-irgendwann-okay-promo-2",
+				titel: "t1m – Egal – Irgendwann Okay – Promo Reel #2",
+				link: "https://www.instagram.com/reel/DPbcvBAjCLL/",
+				kategorien: ["shortform", "post", "all"],
+				eigenschaften: [
+					"Rollen: Schnitt",
+					"Software: Adobe Premiere Pro",
+					"09/2025"
+				],
+				beschreibung: "Promo-Reel für eigenen Song – Instagram, TikTok – Kamera: @lu.visuals_",
+				embedTyp: "thumbnail",
+				thumbnail: "thumbnails/t1m-egal-irgendwann-okay-2.jpg"
 			}
 		];
 
@@ -333,7 +539,7 @@
 		function renderProjects(category) {
 			projectList.innerHTML = "";
 
-			const sorted = [...projects]; // Platzhalter für zukünftige Sortierung
+			const sorted = [...projects]; // Platzhalter für zukünftige Datums-Sortierung
 
 			sorted
 				.filter(p => p.kategorien.includes(category))
