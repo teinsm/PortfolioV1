@@ -1,6 +1,4 @@
-PORTFOLIO V3.5 (Text statt thumbnails)
-
-I<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
 	<meta charset="UTF-8">
@@ -318,6 +316,7 @@ I<!DOCTYPE html>
 		   - "kamera" (Kameraarbeit)     -> Kameraarbeit
 		   - "kreativ" (Storyboarding/Regie/Setdesign) -> Kreativ
 		   - immer zusätzlich "all"
+		   Datumsformat im letzten/ einem Eintrag der Eigenschaften: "MM/YYYY"
 		*/
 
 		const projects = [
@@ -520,6 +519,40 @@ I<!DOCTYPE html>
 			}
 		];
 
+		/* --- Hilfsfunktion: Datum aus Eigenschaften extrahieren --- */
+		function getProjectDate(project) {
+			// Erwartet einen Eintrag "MM/YYYY" irgendwo in project.eigenschaften
+			if (!project.eigenschaften || project.eigenschaften.length === 0) return null;
+
+			let dateString = null;
+
+			// Suche von hinten nach einem Eintrag, der wie MM/YYYY aussieht
+			for (let i = project.eigenschaften.length - 1; i >= 0; i--) {
+				const value = project.eigenschaften[i].trim();
+				// Sehr simple Prüfung: 7 Zeichen, "/" an Position 2, nur Zahlen an den übrigen Stellen
+				if (
+					value.length === 7 &&
+					value[2] === "/" &&
+					!isNaN(parseInt(value.slice(0, 2))) &&
+					!isNaN(parseInt(value.slice(3)))
+				) {
+					dateString = value;
+					break;
+				}
+			}
+
+			if (!dateString) return null;
+
+			const [monthStr, yearStr] = dateString.split("/");
+			const month = parseInt(monthStr, 10);
+			const year = parseInt(yearStr, 10);
+
+			if (isNaN(month) || isNaN(year)) return null;
+
+			// JS-Monate sind 0-basiert
+			return new Date(year, month - 1, 1);
+		}
+
 		/* --- Portfolio-Kategorien / Listenfilter --- */
 
 		const projectList = document.getElementById("project-list");
@@ -548,86 +581,104 @@ I<!DOCTYPE html>
 		function renderProjects(category) {
 			projectList.innerHTML = "";
 
-			const sorted = [...projects]; // Platzhalter für zukünftige Datums-Sortierung
+			// Kopie mit Datum für Sortierung anreichern
+			const withDates = projects.map(p => {
+				return {
+					...p,
+					_sortDate: getProjectDate(p)
+				};
+			});
 
-			sorted
+			// Filter + Sortierung (absteigend nach Datum, neueste zuerst)
+			const filteredAndSorted = withDates
 				.filter(p => p.kategorien.includes(category))
-				.forEach(project => {
-					const item = document.createElement("div");
-					item.className = "project-item";
-
-					// Spalte 1: Miniplayer / Platzhalter / Link
-					const media = document.createElement("div");
-					media.className = "project-media";
-
-					if (project.embedTyp === "youtube") {
-						const iframe = document.createElement("iframe");
-						iframe.width = 320;
-						iframe.height = 180;
-						iframe.src = project.link.replace("watch?v=", "embed/");
-						iframe.title = project.titel;
-						iframe.frameBorder = "0";
-						iframe.allow =
-							"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-						iframe.allowFullscreen = true;
-						media.appendChild(iframe);
-					} else if (project.embedTyp === "thumbnail") {
-						// Schwarze Fläche mit Text, komplett klickbar
-						const link = document.createElement("a");
-						link.href = project.link;
-						link.target = "_blank";
-
-						const box = document.createElement("div");
-						box.className = "black-placeholder";
-
-						const text = document.createElement("span");
-						text.textContent = "hier klicken, um zum video zu gelangen";
-
-						box.appendChild(text);
-						link.appendChild(box);
-						media.appendChild(link);
-					} else {
-						// Fallback: einfacher Textlink
-						const link = document.createElement("a");
-						link.href = project.link;
-						link.target = "_blank";
-						link.textContent = "Video ansehen";
-						media.appendChild(link);
+				.sort((a, b) => {
+					const da = a._sortDate;
+					const db = b._sortDate;
+					if (da && db) {
+						return db - da; // neuere zuerst
 					}
-
-					// Spalte 2: Eigenschaften
-					const properties = document.createElement("div");
-					properties.className = "project-properties";
-
-					const title = document.createElement("div");
-					title.className = "project-meta-title";
-					title.textContent = project.titel;
-					properties.appendChild(title);
-
-					const ul = document.createElement("ul");
-					project.eigenschaften.forEach(text => {
-						const li = document.createElement("li");
-						li.textContent = text;
-						ul.appendChild(li);
-					});
-					properties.appendChild(ul);
-
-					// Spalte 3: Beschreibung
-					const description = document.createElement("div");
-					const descTitle = document.createElement("div");
-					descTitle.className = "project-meta-section-title";
-					descTitle.textContent = "Beschreibung";
-					const descText = document.createElement("div");
-					descText.textContent = project.beschreibung;
-					description.appendChild(descTitle);
-					description.appendChild(descText);
-
-					item.appendChild(media);
-					item.appendChild(properties);
-					item.appendChild(description);
-
-					projectList.appendChild(item);
+					if (da && !db) return -1; // mit Datum vor ohne Datum
+					if (!da && db) return 1;
+					return 0; // beide ohne Datum: Reihenfolge egal
 				});
+
+			filteredAndSorted.forEach(project => {
+				const item = document.createElement("div");
+				item.className = "project-item";
+
+				// Spalte 1: Miniplayer / Platzhalter / Link
+				const media = document.createElement("div");
+				media.className = "project-media";
+
+				if (project.embedTyp === "youtube") {
+					const iframe = document.createElement("iframe");
+					iframe.width = 320;
+					iframe.height = 180;
+					iframe.src = project.link.replace("watch?v=", "embed/");
+					iframe.title = project.titel;
+					iframe.frameBorder = "0";
+					iframe.allow =
+						"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+					iframe.allowFullscreen = true;
+					media.appendChild(iframe);
+				} else if (project.embedTyp === "thumbnail") {
+					// Schwarze Fläche mit Text, komplett klickbar
+					const link = document.createElement("a");
+					link.href = project.link;
+					link.target = "_blank";
+
+					const box = document.createElement("div");
+					box.className = "black-placeholder";
+
+					const text = document.createElement("span");
+					text.textContent = "hier klicken, um zum video zu gelangen";
+
+					box.appendChild(text);
+					link.appendChild(box);
+  					media.appendChild(link);
+				} else {
+					// Fallback: einfacher Textlink
+					const link = document.createElement("a");
+					link.href = project.link;
+					link.target = "_blank";
+					link.textContent = "Video ansehen";
+					media.appendChild(link);
+				}
+
+				// Spalte 2: Eigenschaften
+				const properties = document.createElement("div");
+				properties.className = "project-properties";
+
+				const title = document.createElement("div");
+				title.className = "project-meta-title";
+				title.textContent = project.titel;
+				properties.appendChild(title);
+
+				const ul = document.createElement("ul");
+				project.eigenschaften.forEach(text => {
+					const li = document.createElement("li");
+					li.textContent = text;
+					ul.appendChild(li);
+				});
+				properties.appendChild(ul);
+
+				// Spalte 3: Beschreibung
+				const description = document.createElement("div");
+				const descTitle = document.createElement("div");
+				descTitle.className = "project-meta-section-title";
+				descTitle.textContent = "Beschreibung";
+				const descText = document.createElement("div");
+				descText.textContent = project.beschreibung;
+				description.appendChild(descTitle);
+				description.appendChild(descText);
+
+				item.appendChild(media);
+				item.appendChild(properties);
+				item.appendChild(description);
+
+				projectList.appendChild(item);
+			});
 		}
 
 		// Klicks auf die großen Überschriften (linke Seite)
@@ -644,4 +695,3 @@ I<!DOCTYPE html>
 	</script>
 </body>
 </html>
-
