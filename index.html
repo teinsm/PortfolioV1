@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="UTF-8">
+	<title>Portfolio</title>
+	<style>
+		/* Grundlayout */
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+			background-color: #FFFFFF;
+			color: #000000;
+		}
+
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		/* Navigation oben */
+		.navbar {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 60px;
+			background-color: #FFFFFF;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 40px;
+			border-bottom: 1px solid #e5e5e5;
+			z-index: 1000;
+			font-size: 16px;
+		}
+
+		.nav-link {
+			cursor: pointer;
+			text-transform: lowercase;
+		}
+
+		.nav-link.active {
+			font-weight: 600;
+			text-decoration: underline;
+		}
+
+		/* Für Tabs „Portfolio“ & „Kontakt“: per Mouseover anzeigbare Nav */
+		.navbar.hidden-on-tab {
+			top: -60px;
+			transition: top 0.2s ease-out;
+		}
+
+		.nav-hover-zone {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 20px;
+			z-index: 999;
+		}
+
+		.nav-hover-zone:hover + .navbar.hidden-on-tab,
+		.navbar.hidden-on-tab:hover {
+			top: 0;
+		}
+
+		/* Seitencontainer */
+		.page {
+			min-height: 100vh;
+			padding: 100px 80px 60px 80px; /* Platz für Nav oben */
+			display: none;
+		}
+
+		.page.active {
+			display: block;
+		}
+
+		h1 {
+			font-size: 48px;
+			margin-bottom: 40px;
+		}
+
+		/* Über-mich-Seite */
+		.hero-center {
+			min-height: calc(100vh - 140px);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 40px;
+			text-align: center;
+		}
+
+		/* Portfolio – Layout */
+		.portfolio-layout {
+			display: flex;
+			gap: 40px;
+			align-items: flex-start;
+		}
+
+		/* Linke Spalte: ausklappbare Kategorien */
+		.portfolio-categories {
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+		}
+
+		.category-toggle {
+			cursor: pointer;
+			font-size: 18px;
+			text-transform: uppercase;
+		}
+
+		/* Wenn eine Kategorie geöffnet ist: schmale Leiste links mit Pfeilen */
+		.category-sidebar {
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+			font-size: 12px; /* kleine Beschriftung */
+		}
+
+		.category-sidebar button {
+			background: none;
+			border: none;
+			cursor: pointer;
+			text-align: left;
+		}
+
+		/* Rechte Seite: Listenansicht der Projekte */
+		.project-list {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			gap: 24px;
+		}
+
+		.project-item {
+			display: grid;
+			grid-template-columns: 1.5fr 2fr 3fr;
+			gap: 16px;
+			align-items: flex-start;
+			font-size: 13px; /* einheitlich 13px in der Liste */
+			border-bottom: 1px solid #e5e5e5;
+			padding-bottom: 16px;
+		}
+
+		.project-media {
+			text-align: right;
+		}
+
+		.project-media iframe,
+		.project-media img {
+			max-width: 100%;
+			height: auto;
+		}
+
+		.project-meta-title {
+			font-size: 13px;
+			font-weight: 600;
+			margin-bottom: 4px;
+			text-transform: none;
+		}
+
+		.project-meta-section-title {
+			font-size: 13px;
+			font-weight: 600;
+			margin-bottom: 4px;
+		}
+
+		.project-properties ul {
+			list-style: disc;
+			padding-left: 18px;
+		}
+
+		/* Kontaktseite */
+		.contact-list {
+			font-size: 16px;
+			line-height: 1.8;
+		}
+	</style>
+</head>
+<body>
+	<!-- Mouseover-Zone für Tabs „Portfolio“ & „Kontakt“ -->
+	<div class="nav-hover-zone"></div>
+
+	<!-- Navigation -->
+	<nav class="navbar" id="navbar">
+		<span class="nav-link" data-target="about">über mich</span>
+		<span class="nav-link" data-target="portfolio">Portfolio</span>
+		<span class="nav-link" data-target="contact">Kontakt</span>
+	</nav>
+
+	<!-- ÜBER MICH / LANDING PAGE -->
+	<section class="page active" id="page-about">
+		<h1>Portfolio</h1>
+		<div class="hero-center">
+			<span>Platzhalter</span>
+		</div>
+	</section>
+
+	<!-- PORTFOLIO -->
+	<section class="page" id="page-portfolio">
+		<h1>Portfolio</h1>
+
+		<div class="portfolio-layout">
+			<!-- Linke Seite: Kategorien + Sidebar -->
+			<div>
+				<div class="portfolio-categories" id="portfolio-categories">
+					<div class="category-toggle" data-category="all">Alle Projekte</div>
+					<div class="category-toggle" data-category="kamera">Kameraarbeit</div>
+					<div class="category-toggle" data-category="post">Post-Production</div>
+					<div class="category-toggle" data-category="kreativ">Kreativ</div>
+					<div class="category-toggle" data-category="shortform">Shortform</div>
+					<div class="category-toggle" data-category="longform">Longform</div>
+				</div>
+
+				<div class="category-sidebar" id="category-sidebar" style="margin-top: 24px;">
+					<!-- Wird dynamisch mit kleinen Pfeilen & Labels gefüllt -->
+				</div>
+			</div>
+
+			<!-- Rechte Seite: Projektliste -->
+			<div class="project-list" id="project-list">
+				<!-- Wird per JS mit Projekten gefüllt -->
+			</div>
+		</div>
+	</section>
+
+	<!-- KONTAKT -->
+            <!-- Die AI hat bei der Interpretation des Inhalts einen Fehler gemacht. Bitte hier die Kontaktdaten einfügen:
+  Instagram: [https://www.instagram.com/t1mkardashian/](https://www.instagram.com/t1mkardashian/)
+  E-Mail: timkardashianwestcontact@gmail.com-->
+	<section class="page" id="page-contact">
+		<h1>Portfolio</h1>
+		<div class="contact-list">
+			<p>Instagram: <a href="https://www.instagram.com/t1mkardashian/" target="_blank">@t1mkardashian</a></p>
+			<p>E-Mail: <a href="mailto:timkardashianwestcontact@gmail.com">timkardashianwestcontact@gmail.com</a></p>
+		</div>
+	</section>
+
+	<script>
+		/* --- Navigation / Tabs --- */
+
+		const navbar = document.getElementById("navbar");
+		const navLinks = document.querySelectorAll(".nav-link");
+		const pages = {
+			about: document.getElementById("page-about"),
+			portfolio: document.getElementById("page-portfolio"),
+			contact: document.getElementById("page-contact")
+		};
+
+		function setActivePage(target) {
+			// Seiten umschalten
+			Object.keys(pages).forEach(key => {
+				pages[key].classList.toggle("active", key === target);
+			});
+
+			// Nav-Links markieren
+			navLinks.forEach(link => {
+				link.classList.toggle("active", link.dataset.target === target);
+			});
+
+			// Verhalten der Nav: auf Landing fix, sonst Mouseover
+			if (target === "about") {
+				navbar.classList.remove("hidden-on-tab");
+			} else {
+				navbar.classList.add("hidden-on-tab");
+			}
+		}
+
+		navLinks.forEach(link => {
+			link.addEventListener("click", () => {
+				setActivePage(link.dataset.target);
+			});
+		});
+
+		/* --- Projektdaten: hier kannst du später erweitern --- */
+
+		const projects = [
+			{
+				id: "egal-promo-reel",
+				titel: "Egal Promo Reel",
+				link: "https://www.instagram.com/reel/DOJGLA9jMYi/",
+				kategorien: ["shortform", "post", "all"], // „Schnitt“ -> Post-Production
+				eigenschaften: [
+					"Software: Adobe Premiere Pro, CapCut",
+					"Vollständige Postproduktion",
+					"10/2024"
+				],
+				beschreibung: "Promovideo für meinen Song „Egal“ – Instagram/TikTok – Kamera: Niclas Müller",
+				embedTyp: "link" // Instagram-Reel lässt sich oft schlecht direkt einbetten -> Link mit Thumbnail o.Ä.
+			},
+			{
+				id: "kurzfilm-unentschieden",
+				titel: "Kurzfilmprojekt – „Unentschieden“",
+				link: "https://www.youtube.com/watch?v=I2UeHpvGEH4",
+				kategorien: ["longform", "kreativ", "kamera", "post", "all"],
+				// Kreativ = Storyboarding, Regie, Setdesign (hier Storyboarding & Regie erfüllt)
+				eigenschaften: [
+					"Bediente Kamera: FX30",
+					"Software: Adobe Premiere Pro 2025, Adobe Photoshop 2025",
+					"Vollständige Reproduktion (Assistiert)",
+					"Vollständige Postproduktion",
+					"11/2025"
+				],
+				beschreibung: "Kurzfilmprojekt im Rahmen meiner Ausbildung – Credits im Video",
+				embedTyp: "youtube"
+			}
+		];
+
+		/* --- Portfolio-Kategorien / Sidebar / Listenfilter --- */
+
+		const categorySidebar = document.getElementById("category-sidebar");
+		const projectList = document.getElementById("project-list");
+		const categoryOrder = ["all", "kamera", "post", "kreativ", "shortform", "longform"];
+		const categoryLabels = {
+			all: "Alle Projekte",
+			kamera: "Kameraarbeit",
+			post: "Post-Production",
+			kreativ: "Kreativ",
+			shortform: "Shortform",
+			longform: "Longform"
+		};
+
+		let activeCategory = null;
+
+		function renderSidebar(active) {
+			categorySidebar.innerHTML = "";
+			if (!active) return;
+
+			categoryOrder.forEach(cat => {
+				if (cat === active) return;
+				const btn = document.createElement("button");
+				btn.textContent = "➜ " + categoryLabels[cat];
+				btn.style.fontSize = "12px";
+				btn.addEventListener("click", () => {
+					setCategory(cat);
+				});
+				categorySidebar.appendChild(btn);
+			});
+		}
+
+		function setCategory(category) {
+			activeCategory = category;
+			// Kategorie-Überschriften optisch hervorheben
+			document.querySelectorAll(".category-toggle").forEach(el => {
+				el.style.fontWeight = (el.dataset.category === category) ? "600" : "400";
+			});
+			// Sidebar aktualisieren
+			renderSidebar(category);
+			// Projekte filtern
+			renderProjects(category);
+		}
+
+		function renderProjects(category) {
+			projectList.innerHTML = "";
+
+			// Nach Datum sortieren – aktuell sind es nur 2, du kannst später eine echte Datumsspalte pflegen
+			const sorted = [...projects]; // Platzhalter für zukünftige Sortierung
+
+			sorted
+				.filter(p => p.kategorien.includes(category))
+				.forEach(project => {
+					const item = document.createElement("div");
+					item.className = "project-item";
+
+					// Spalte 1: Miniplayer / Thumbnail / Link
+					const media = document.createElement("div");
+					media.className = "project-media";
+
+					if (project.embedTyp === "youtube") {
+						const iframe = document.createElement("iframe");
+						iframe.width = 320;
+						iframe.height = 180;
+						iframe.src = project.link.replace("watch?v=", "embed/");
+						iframe.title = project.titel;
+						iframe.frameBorder = "0";
+						iframe.allow =
+							"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+						iframe.allowFullscreen = true;
+						media.appendChild(iframe);
+					} else {
+						// Fallback: Link (du kannst hier später ein echtes Thumbnail ergänzen)
+						const link = document.createElement("a");
+						link.href = project.link;
+						link.target = "_blank";
+						link.textContent = "Video ansehen";
+						media.appendChild(link);
+					}
+
+					// Spalte 2: Eigenschaften
+					const properties = document.createElement("div");
+					properties.className = "project-properties";
+
+					const title = document.createElement("div");
+					title.className = "project-meta-title";
+					title.textContent = project.titel;
+					properties.appendChild(title);
+
+					const propTitle = document.createElement("div");
+					propTitle.className = "project-meta-section-title";
+					propTitle.textContent = "Eigenschaften";
+					properties.appendChild(propTitle);
+
+					const ul = document.createElement("ul");
+					project.eigenschaften.forEach(text => {
+						const li = document.createElement("li");
+						li.textContent = text;
+						ul.appendChild(li);
+					});
+					properties.appendChild(ul);
+
+					// Spalte 3: Beschreibung
+					const description = document.createElement("div");
+					const descTitle = document.createElement("div");
+					descTitle.className = "project-meta-section-title";
+					descTitle.textContent = "Beschreibung";
+					const descText = document.createElement("div");
+					descText.textContent = project.beschreibung;
+					description.appendChild(descTitle);
+					description.appendChild(descText);
+
+					item.appendChild(media);
+					item.appendChild(properties);
+					item.appendChild(description);
+
+					projectList.appendChild(item);
+				});
+		}
+
+		// Klicks auf die großen Überschriften (linke Seite)
+		document.querySelectorAll(".category-toggle").forEach(el => {
+			el.addEventListener("click", () => {
+				setCategory(el.dataset.category);
+			});
+		});
+
+		// Standard: „Alle Projekte“ geöffnet
+		setCategory("all");
+	</script>
+</body>
+</html>
